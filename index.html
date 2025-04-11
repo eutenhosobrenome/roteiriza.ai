@@ -3,122 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>roteiriza.ai</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #fdf6ff;
-      color: #333;
-    }
-
-    header {
-      background: linear-gradient(to right, #9d50bb, #6e48aa);
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: row;
-      padding: 1rem;
-      gap: 2rem;
-    }
-
-    .main {
-      flex: 2;
-    }
-
-    .sidebar {
-      flex: 1;
-      background: #f0e7fb;
-      padding: 1rem;
-      border-radius: 12px;
-      height: fit-content;
-    }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    button {
-      padding: 0.6rem 1rem;
-      border: none;
-      border-radius: 999px;
-      background: #d7aefb;
-      color: #333;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    button:hover {
-      background: #c084f5;
-    }
-
-    #output {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 1rem;
-      white-space: pre-wrap;
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-  </style>
+  <title>Roteiriza.ai</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 </head>
-<body>
-  <header>
-    <h1>🎬 roteiriza.ai</h1>
-    <p>Gere roteiros prontos para TikTok baseados em tendências da Shopee</p>
-  </header>
+<body class="bg-gradient-to-b from-purple-600 via-pink-500 to-white text-white min-h-screen">
 
-  <div class="container">
-    <div class="main">
-      <h2>Escolha um tema:</h2>
-      <div class="buttons">
-        <button onclick="gerarRoteiro('Gadgets da Shopee')">📱 Gadgets da Shopee</button>
-        <button onclick="gerarRoteiro('Beleza e Skincare')">💄 Beleza e Skincare</button>
-        <button onclick="gerarRoteiro('Decoração fácil e barata')">🏡 Decoração fácil</button>
-        <button onclick="gerarRoteiro('Cozinha inteligente')">🍳 Cozinha inteligente</button>
-        <button onclick="gerarRoteiro('Moda em alta')">👗 Moda em alta</button>
-        <button onclick="gerarRoteiro('Itens mais surpreendentes da Shopee')">✨ Itens Surpreendentes</button>
-        <button onclick="gerarRoteiro('Melhores roupas na Shopee')">🧥 Roupas em Alta</button>
-        <button onclick="gerarRoteiro('10 Itens surpreendentes da shopee')">🔟 Top 10 Itens</button>
-        <button onclick="gerarRoteiro('Outros')">🌀 Outros</button>
-      </div>
+  <div class="container mx-auto px-4 py-10">
+    <h1 class="text-4xl font-bold text-center mb-6">Roteiriza.ai 🎬</h1>
+    <p class="text-center text-white mb-10">Gere roteiros incríveis com um clique!</p>
 
-      <div id="output">
-        <strong>Roteiro gerado:</strong>
-        <p id="textoRoteiro">Selecione um tema acima para gerar seu roteiro.</p>
-      </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-10">
+      <!-- Temas -->
+      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Gadgets da Shopee">Gadgets</button>
+      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Beleza e Skincare">Skincare</button>
+      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Decoração fácil e barata">Decoração</button>
+      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Cozinha inteligente">Cozinha</button>
+      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Moda em alta">Moda</button>
+      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Itens mais surpreendentes da Shopee">Surpreendentes</button>
+      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Melhores roupas na Shopee">Roupas</button>
+      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="10 Itens surpreendentes da shopee">Top 10</button>
+      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Outros">Outros</button>
     </div>
 
-    <div class="sidebar">
-      <h3>📈 Painéis de apoio</h3>
-      <ul>
-        <li>10 temas em alta no TikTok hoje</li>
-        <li>Trends virais da semana</li>
-        <li>Produtos com mais views</li>
-        <li>Dicas de engajamento</li>
-        <li>Roteiros com maior conversão</li>
-      </ul>
+    <div id="resultado" class="bg-white text-gray-800 p-6 rounded-lg shadow-lg min-h-[200px]">
+      <h2 class="text-xl font-bold mb-4">Roteiro gerado:</h2>
+      <pre id="roteiro" class="whitespace-pre-wrap font-mono text-sm"></pre>
     </div>
   </div>
 
   <script>
-    function gerarRoteiro(tema) {
-      const promptBase = `Você é um criador de conteúdo para TikTok que ajuda pessoas a descobrirem produtos incríveis da Shopee. Com base no tema "${tema}", crie um roteiro de vídeo envolvente, com gancho inicial, apresentação dos produtos, destaque das funcionalidades e chamada para ação. Use linguagem leve, divertida e que funcione bem com trilhas virais.`;
+    const botoes = document.querySelectorAll(".tema");
+    const roteiroEl = document.getElementById("roteiro");
+    const resultadoEl = document.getElementById("resultado");
 
-      document.getElementById('textoRoteiro').innerText = promptBase;
-    }
+    botoes.forEach(botao => {
+      botao.addEventListener("click", async () => {
+        const tema = botao.dataset.tema;
+
+        roteiroEl.textContent = "Gerando roteiro...";
+
+        try {
+          const resposta = await fetch("https://roteiriza-ai.replit.app/generate-script", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tema })
+          });
+
+          const data = await resposta.json();
+          roteiroEl.textContent = data.script || "Erro ao gerar roteiro.";
+        } catch (erro) {
+          roteiroEl.textContent = "Erro ao conectar com o servidor.";
+        }
+      });
+    });
   </script>
 </body>
 </html>
