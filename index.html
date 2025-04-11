@@ -3,59 +3,101 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Roteiriza.ai</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <title>roteiriza.ai 🎬</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #8e44ad, #e91e63);
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 300px;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .main {
+      flex: 1;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: white;
+      color: #8e44ad;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px 0;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #f0f0f0;
+    }
+
+    #resultado {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      white-space: pre-line;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-b from-purple-600 via-pink-500 to-white text-white min-h-screen">
+<body>
+  <div class="sidebar">
+    <h2>Temas em Alta</h2>
+    <button onclick="gerarRoteiro('Gadgets da Shopee')">Gadgets da Shopee</button>
+    <button onclick="gerarRoteiro('Top 5 Beleza')">Top 5 Beleza</button>
+    <button onclick="gerarRoteiro('Organização Inteligente')">Organização Inteligente</button>
+    <button onclick="gerarRoteiro('Achadinhos de Cozinha')">Achadinhos de Cozinha</button>
+    <button onclick="gerarRoteiro('Decoração Criativa')">Decoração Criativa</button>
+    <h2 style="margin-top:30px;">Trends do Dia</h2>
+    <button onclick="gerarRoteiro('Produtos virais do TikTok')">Produtos virais do TikTok</button>
+    <button onclick="gerarRoteiro('Review com humor')">Review com humor</button>
+    <button onclick="gerarRoteiro('Comparativo de produtos')">Comparativo de produtos</button>
+    <button onclick="gerarRoteiro('Estilo de vida minimalista')">Estilo de vida minimalista</button>
+    <button onclick="gerarRoteiro('Acessórios tech úteis')">Acessórios tech úteis</button>
+  </div>
 
-  <div class="container mx-auto px-4 py-10">
-    <h1 class="text-4xl font-bold text-center mb-6">Roteiriza.ai 🎬</h1>
-    <p class="text-center text-white mb-10">Gere roteiros incríveis com um clique!</p>
-
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-10">
-      <!-- Temas -->
-      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Gadgets da Shopee">Gadgets</button>
-      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Beleza e Skincare">Skincare</button>
-      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Decoração fácil e barata">Decoração</button>
-      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Cozinha inteligente">Cozinha</button>
-      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Moda em alta">Moda</button>
-      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Itens mais surpreendentes da Shopee">Surpreendentes</button>
-      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Melhores roupas na Shopee">Roupas</button>
-      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="10 Itens surpreendentes da shopee">Top 10</button>
-      <button class="tema bg-white text-purple-600 font-semibold py-2 px-4 rounded-lg shadow hover:bg-purple-100" data-tema="Outros">Outros</button>
-    </div>
-
-    <div id="resultado" class="bg-white text-gray-800 p-6 rounded-lg shadow-lg min-h-[200px]">
-      <h2 class="text-xl font-bold mb-4">Roteiro gerado:</h2>
-      <pre id="roteiro" class="whitespace-pre-wrap font-mono text-sm"></pre>
-    </div>
+  <div class="main">
+    <h1>Gerador de Roteiros TikTok 🎥</h1>
+    <p>Escolha um tema e veja a mágica acontecer.</p>
+    <div id="resultado">Seu roteiro aparecerá aqui.</div>
   </div>
 
   <script>
-    const botoes = document.querySelectorAll(".tema");
-    const roteiroEl = document.getElementById("roteiro");
-    const resultadoEl = document.getElementById("resultado");
+    async function gerarRoteiro(tema) {
+      document.getElementById("resultado").innerText = "Gerando roteiro para: " + tema + "...";
 
-    botoes.forEach(botao => {
-      botao.addEventListener("click", async () => {
-        const tema = botao.dataset.tema;
+      try {
+        const resposta = await fetch("https://roteiriza-ai.replit.app/generate-script", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ tema })
+        });
 
-        roteiroEl.textContent = "Gerando roteiro...";
-
-        try {
-          const resposta = await fetch("https://roteiriza-ai.replit.app/generate-script", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ tema })
-          });
-
-          const data = await resposta.json();
-          roteiroEl.textContent = data.script || "Erro ao gerar roteiro.";
-        } catch (erro) {
-          roteiroEl.textContent = "Erro ao conectar com o servidor.";
-        }
-      });
-    });
+        const dados = await resposta.json();
+        document.getElementById("resultado").innerText = dados.resultado || "Erro ao gerar roteiro.";
+      } catch (erro) {
+        document.getElementById("resultado").innerText = "Erro ao conectar com o servidor.";
+      }
+    }
   </script>
 </body>
 </html>
